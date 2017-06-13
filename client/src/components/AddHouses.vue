@@ -22,31 +22,31 @@
       </div>
       <div class="input">
         <label>Image</label><br>
-        <Input v-model="image" class="in" placeholder="image">
+        <Input v-model="img" class="in" placeholder="image">
           <Button slot="append" icon="ios-search"></Button>
         </Input>
       </div>
       <div class="input">
         <label>Location Coordinate</label><br>
+        <Input v-model="coordinate" class="in" placeholder="Coordinate : Latitude,Longitude" readonly></Input>
+        <br>
         <gmap-map
-          :center="center"
+          :center="marker"
           :zoom="16"
+          @click="mapClicked"
           style="height: 300px"
         >
           <gmap-marker
-            :key="index"
-            v-for="(m, index) in markers"
-            :position="m.position"
+            :position="marker"
             :clickable="true"
-            :draggable="true"
-            @click="center"
+            :draggable="false"
+            @g-click="marker"
           ></gmap-marker>
         </gmap-map>
       </div>
       <div class="input">
-        <Button type="primary" style="margin-top : 10px;">Save</Button>
+        <Button type="primary" style="margin-top : 10px;" @click="save">Save</Button>
       </div>
-      {{center}}
     </div>
   </div>
 </template>
@@ -65,11 +65,38 @@ Vue.use(VueGoogleMaps, {
 export default {
   data () {
     return {
-      modalMap : false,
-      center: {lat: -6.260814, lng: 106.781590},
-      markers: [{
-        position: {lat: -6.260814, lng: 106.781590}
-      }]
+      title :'',
+      address : '',
+      description : '',
+      price : 0,
+      img : '',
+      coordinate : ''
+    }
+  },
+  computed: {
+    marker() {
+      return this.$store.getters.markers;
+    }
+  },
+  methods :{
+    mapClicked: function(mouseArgs) {
+      let coordinate = {
+        lat: mouseArgs.latLng.lat(),
+        lng: mouseArgs.latLng.lng()
+      };
+      this.coordinate = coordinate.lat+','+coordinate.lng
+      this.$store.commit('setMarker', coordinate)
+    },
+    save(){
+      let house = {
+        title : this.title,
+        address : this.address,
+        description : this.description,
+        price : this.price,
+        img : this.img,
+        coordinate : this.coordinate
+      }
+      this.$store.dispatch('insertHouse', house)
     }
   }
 }

@@ -11,15 +11,17 @@
         <div class="content">
           {{house.description}} <br>
           <strong>{{house.price}}</strong>
+          {{house.location}}
         </div>
         <div class="content">
           <gmap-map
-  :center="{lat:-6.260814, lng:106.781590}"
-  :zoom="12"
-  map-type-id="terrain"
-  style="width: 200px; height: 200px"
->
-</gmap-map>
+            :center="{lat: -6.26048407592326, lng: 106.78148746490479}"
+            :zoom="12"
+            scrollwheel="false"
+            map-type-id="terrain"
+            style="width: 200px; height: 200px"
+          >
+          </gmap-map>
         </div>
       </div>
     </Card>
@@ -32,15 +34,23 @@ export default {
   methods : {
     listDataHouses(){
       this.$store.dispatch('seedList')
+    },
+    parseCoordinate() {
+      // let parsedCoor = this.coordinate.split(",");
+      // this.marker.lat = Number(parsedCoor[0]);
+      // this.marker.lng = Number(parsedCoor[1]);
     }
   },
   computed : {
     listHouses(){
-      return this.$store.state.listHouses
+      return this.$store.getters.listHouses
     }
   },
   created (){
     this.listDataHouses()
+  },
+  mounted: function() {
+    this.parseCoordinate();
   }
 }
 </script>

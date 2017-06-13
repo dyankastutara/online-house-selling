@@ -17,7 +17,7 @@ module.exports = {
     House.create({
       title : req.body.title,
       address : req.body.address,
-      location : req.body.location,
+      coordinate : req.body.coordinate,
       description : req.body.description,
       price : req.body.price,
       img : req.body.img

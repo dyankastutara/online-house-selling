@@ -5,7 +5,7 @@ require('../config/db')
 const houseSchema = new Schema({
   title : String,
   address : String,
-  location : String,
+  coordinate : String,
   description : String,
   price : Number,
   img : String
