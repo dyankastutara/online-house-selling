@@ -8,10 +8,15 @@
         <div class="content">
           <img :src="house.img" style="height:200px; width:200px;">
         </div>
-        <div class="content" style="width:100%;">
-          {{house.description}} <br>
-          <strong>{{house.price}}</strong>
-          {{house.location}}
+        <div class="content" style="width:100%; display:flex; flex-warp:warp;" >
+          <div class="" style="position:absolute;">
+            <p>{{house.description}}</p>
+            <strong>Rp. {{house.price}}</strong>
+          </div>
+          <div class="" style="align-self: flex-end;">
+            <Button type="primary" style="margin-top : 10px;" @click="">Edit</Button>
+            <Button type="primary" style="margin-top : 10px;" @click.native="deleteHouse(house)">Delete</Button>
+          </div>
         </div>
         <div class="content">
           <gmap-map
@@ -49,6 +54,10 @@ export default {
     parseCoordinate() {
       this.marker.lat = Number(this.$store.getters.markers.lat);
       this.marker.lng = Number(this.$store.getters.markers.lng);
+    },
+    deleteHouse(house){
+      console.log("Masuk");
+      this.$store.dispatch('deleteList', house)
     }
   },
   computed : {

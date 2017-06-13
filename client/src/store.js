@@ -40,11 +40,19 @@ export const store = new Vuex.Store({
     },
     addHouse(state, house){
       state.listHouses.push(house)
+    },
+    deleteHouse(state, house){
+      // state.listHouses.findIndex(stHouse=>{stHouse._id == house._id})
+      function checkIndex(houses) {
+          return houses == house;
+      }
+      let index = state.listHouses.findIndex(checkIndex)
+      state.listHouses.splice(index,1)
     }
   },
   actions : {
     seedList ({commit}){
-      axios.get('http://localhost:3000/api/houses')
+      axios.get('http://localhost:3000/api/houses/')
       .then(response=>{
         commit('listDataHouse', response.data)
       })
@@ -53,13 +61,22 @@ export const store = new Vuex.Store({
       })
     },
     insertHouse({commit}, house){
-      axios.post('http://localhost:3000/api/houses', house)
+      axios.post('http://localhost:3000/api/houses/', house)
       .then((response) => {
         commit('addHouse', response.data);
       })
       .catch((err) => {
         console.log(err);
       });
+    },
+    deleteList({commit}, house){
+      axios.delete('http://localhost:3000/api/houses/'+house._id)
+      .then(response=>{
+      commit('deleteHouse', house)
+      })
+      .catch(err=>{
+        console.log(err);
+      })
     }
   },
   getters : {

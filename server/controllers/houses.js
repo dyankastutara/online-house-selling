@@ -13,7 +13,6 @@ module.exports = {
     })
   },
   insert : (req, res)=>{
-
     House.create({
       title : req.body.title,
       address : req.body.address,
@@ -27,6 +26,16 @@ module.exports = {
     })
     .catch(err=>{
       res.send (err)
+    })
+  },
+  deleteHouse : (req, res)=>{
+    House.deleteOne({_id : req.params.id})
+    .exec((err, result)=>{
+      if(err){
+        res.send(err)
+      }else{
+        res.send(result)
+      }
     })
   }
 }
