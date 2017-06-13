@@ -8,19 +8,22 @@
         <div class="content">
           <img :src="house.img" style="height:200px; width:200px;">
         </div>
-        <div class="content">
+        <div class="content" style="width:100%;">
           {{house.description}} <br>
           <strong>{{house.price}}</strong>
           {{house.location}}
         </div>
         <div class="content">
           <gmap-map
-            :center="{lat: -6.26048407592326, lng: 106.78148746490479}"
+            :center="{lat: marker.lat, lng: marker.lng}"
             :zoom="12"
             scrollwheel="false"
             map-type-id="terrain"
             style="width: 200px; height: 200px"
           >
+          <gmap-marker
+            :position="{lat: marker.lat, lng: marker.lng}"
+          ></gmap-marker>
           </gmap-map>
         </div>
       </div>
@@ -31,14 +34,21 @@
 <script>
 export default {
   name : 'listHouses',
+  data(){
+    return {
+      marker:[{
+        lat:null,
+        lng:null
+      }]
+    }
+  },
   methods : {
     listDataHouses(){
       this.$store.dispatch('seedList')
     },
     parseCoordinate() {
-      // let parsedCoor = this.coordinate.split(",");
-      // this.marker.lat = Number(parsedCoor[0]);
-      // this.marker.lng = Number(parsedCoor[1]);
+      this.marker.lat = Number(this.$store.getters.markers.lat);
+      this.marker.lng = Number(this.$store.getters.markers.lng);
     }
   },
   computed : {

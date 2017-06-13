@@ -31,15 +31,8 @@ export const store = new Vuex.Store({
     }]
   },
   mutations : {
-    listDataHouse(state){
-      var self = this
-      axios.get('http://localhost:3000/api/houses')
-      .then(response=>{
-        state.listHouses = response.data
-      })
-      .catch(err=>{
-        res.send(err)
-      })
+    listDataHouse(state, house){
+        state.listHouses = house
     },
     setMarker(state, coordinate) {
       state.center.lng = coordinate.lng;
@@ -51,12 +44,17 @@ export const store = new Vuex.Store({
   },
   actions : {
     seedList ({commit}){
-      commit('listDataHouse')
+      axios.get('http://localhost:3000/api/houses')
+      .then(response=>{
+        commit('listDataHouse', response.data)
+      })
+      .catch(err=>{
+        console.log(err);
+      })
     },
     insertHouse({commit}, house){
       axios.post('http://localhost:3000/api/houses', house)
       .then((response) => {
-        console.log(response.data);
         commit('addHouse', response.data);
       })
       .catch((err) => {
